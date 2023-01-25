@@ -1,7 +1,15 @@
 const express = require('express');
+const morgan=require('morgan');
+const mongoose=require('mongoose')
 
 //express app
 const app=express();   // cfeating ana instance of the express app
+
+//connect to mongodb
+const dburi='mongodb+srv://admin:26432643@cluster0.m264ofs.mongodb.net/node-blog?retryWrites=true&w=majority';
+mongoose.connect(dburi, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(result => app.listen(3000))
+  .catch(err => console.log(err));
 
 //register view engine
 app.set('view engine','ejs');
@@ -9,6 +17,13 @@ app.set('view engine','ejs');
 
 //listen to the request
 app.listen(3000);
+
+//middleware and static files
+
+app.use(express.static('public'));
+app.use(morgan('dev'));
+
+
 
 app.get('/',(req,res)=>{
     const blogs=[
