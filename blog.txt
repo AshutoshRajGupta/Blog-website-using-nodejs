@@ -1,0 +1,172 @@
+https://create-react-app.dev/docs/adding-a-sass-stylesheet/
+
+
+npm i react-quill
+
+backend
+
+1.npm init -y    --(package.json)
+2. creating index.js file
+3. installing library
+---npm add express mysql nodemon
+
+in package.json
+"type":"module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+
+4.importing modules express
+
+import express from 'express';
+const app=express()
+app.use(express.json())
+
+app.listen(8800,()=>{
+    console.log("conneted!!")
+})
+
+
+After this start the server
+--npm start
+
+output-
+[nodemon] starting `node index.js`
+conneted!!
+
+
+5. create new file in api as db.js
+//in db.js all the code will be related to the 
+connection of mysql with nodejs.
+
+
+import mysql from "mysql"
+
+export const db = mysql.createConnection({
+  host:"localhost",
+  user:"root",
+  password: ashutosh,
+  database:"blog"
+})
+
+--on cascade and foreignkey relation 
+mysql> create table posts(id int primary key not null auto_increment, title varchar(255) not null, descp varchar(1000) not null,img varchar(255) not null,date datetime not null,uid int not null, index uid_idx (uid asc) visible , constraint uid foreign key (uid) references users(id) on delete cascade on update cascade);
+Query OK, 0 rows affected (0.04 sec)
+
+
+routes-hume kis kis path pe jana hai
+controllers-jane ke baad kya karna hai (control)
+
+we can make the api request using app.get.
+
+##creating router--
+
+import express from 'express'
+const router=express.Router()
+router.get("/test",(req,res)=>{
+    res.json('this is post')
+})
+export default router
+
+
+## how to use that router in main page(index.js)
+import postRoutes from './routes/posts.js'
+app.use("/api/posts",postRoutes)
+
+
+## on localhost browser
+localhost:8800/api/posts/test
+op-this is post
+
+##
+to put 'this is post' in controllers make controllers folder.
+performing all crud operations in controller by making 
+function and calling those function in routes and 
+calling the routes in app.
+
+code part--
+
+
+## routes/posts.js
+import express from 'express'
+import { addPost } from '../controllers/post.js'
+const router=express.Router()
+router.get("/test",addPost)
+export default router
+
+
+##Controller/post.js
+export const addPost =(req,res)=>{
+    res.json("from controller")
+}
+
+
+## index.js/
+
+import express from "express";
+import postRoutes from './routes/posts.js'
+const app = express();
+app.use(express.json());
+app.use("/api/posts",postRoutes)
+app.listen(8800, () => {
+  console.log("conneted!!!!");
+});
+
+
+
+-----------------------------------
+npm i bcrypt
+-----------------------------------
+e.preventDefault()    -->for refreshing purpose
+
+** as we are making api request we make async function
+
+and for that we need axios lbrary
+axios is a library which allow us to make api request.
+
+in package.json add these
+
+ "proxy":"http://localhost:8800/api/"
+
+and using in [const res = await axios.post("")]
+code--
+------------------------------------------------
+const handleSubmit=async e=>{
+  e.preventDefault()
+  try{
+  const res = await axios.post("/auth/register",inputs)
+  console.log(res)
+  }catch(err){
+    console.log(err)
+  }
+
+}
+--------------------------------------------------------
+
+const navigate=useNavigate()
+
+-------------------
+jsonwebtoken    library
+
+before deleting or updating the post its 
+must be sure that  the post belongs to us.
+so to provide this security we use jsonwebtoken
+
+# ceating tokem
+const token = jwt.sign({id:data[0].id},key)
+
+for cookie-(library)
+npm add cookie-parser
+
+index.js
+import cookieParser
+app.use(cookieparser())
+
+
+------------------
+react context
+https://www.freecodecamp.org/news/react-context-for-beginners/
+
+whenever we use current user we will update our local storage
+
+npm add moment
